@@ -1,0 +1,48 @@
+<html>
+    <header>
+        <title>Posting Data and Viewing</title>
+        <style>
+      table, th, td {
+      padding: 10px;
+      border: 1px solid black; 
+      border-collapse: collapse;
+      }
+            #submit{border: 2px solid black;
+            
+            }
+    </style>
+        <script type='text/javascript'>
+            function empty() {
+                var x;
+                x = document.getElementById("crop").value;
+                if (x == "") {
+                    alert("Enter a Crop Name");
+                    return false;
+                };
+            }
+        </script>
+    </header>
+    <body>
+        <h2>Current crops in Field Database</h2>
+        <h4>Number of crop types: {{ crops|length }}</h4>
+        <table >
+            <tr>
+                <th>Crop Number</th>
+                <th>Crop</th>
+            </tr>
+            {% for crop in crops %}
+            <tr>
+                <td>{{ crop[0] }}</td>
+                <td>{{ crop[1] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <div class='add'>
+            <h3>Add new Crop to a Database</h3>
+            <form method="POST">
+                <input placeholder='Type Name of a Crop' name='crop' type='text' id='crop'/>
+                <input type='submit' value='Add Crop' name='submit' id='submit' onClick="return empty()" />
+            </form>
+        </div>    
+    </body>
+</html>
