@@ -1,110 +1,73 @@
-{
- "cells": [
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "## INFO8000 Assignment 3\n",
-    "\n",
-    "#### Files:\n",
-    "\n",
-    "* **test_app.py** : the main Flask application with all the paths\n",
-    "\n",
-    "* **dbsetup.py** : code used to create and populate the database \n",
-    "\n",
-    "* **render.html** : html file used by the main application to render database results\n",
-    "\n",
-    "### URLs for the API\n",
-    "\n",
-    "* The server address is: http://104.198.216.197\n",
-    "\n",
-    "* **Main Link (/):**\n",
-    "\n",
-    "A GET link Where you can change the values of parameters in the url, gives out a json formated text. (Changeable parameters - name, city, state, institution, status)\n",
-    "\n",
-    "\n",
-    "Examples:\n",
-    "\n",
-    "http://104.198.216.197/?name=Anord&city=Savannah \n",
-    "\n",
-    "http://104.198.216.197/?name=Grace&city=Atlanta&state=Georgia&status=Instructor\n",
-    "\n",
-    "\n",
-    "* **A GET link (/get) to get data from database**\n",
-    "\n",
-    "The data about owners and workers in the field is queried from the database and the output is the resulting json formatted text\n",
-    "\n",
-    "\n",
-    "Examples:\n",
-    "\n",
-    "http://104.198.216.197/get\n",
-    "\n",
-    "\n",
-    "\n",
-    "\n",
-    "* **A POST link (/datapost) where you can post to the database.**\n",
-    "\n",
-    "This is protected by the **API key = '8e64c48b-8920-4b56-9477-1ddb96ced8db'**. You can see a list the current cities in the database, and if you include your API key in your url you can add another cities in the database. \n",
-    "\n",
-    "If submission is successfull you get a json result with status of your submission and all the cities in the database (including the one you submitted)\n",
-    "\n",
-    "Examples:\n",
-    "\n",
-    "With API key\n",
-    "\n",
-    "http://104.198.216.197/datapost?key=8e64c48b-8920-4b56-9477-1ddb96ced8db\n",
-    "\n",
-    "\n",
-    "Without API key\n",
-    "\n",
-    "http://104.198.216.197/datapost\n",
-    "\n",
-    "**Note:** without the key you get a json with failure status when trying to post\n",
-    "\n",
-    "\n",
-    "* **A POST link (/post) where you add new crops to the database**\n",
-    "\n",
-    "The POST process is also protected by the API key. This has an html rendering of the current crops in the database. You can add another crop and see the html result immediately\n",
-    "\n",
-    "Without the API key you can only view, not post.\n",
-    "\n",
-    "Examples:\n",
-    "\n",
-    "With API key\n",
-    "\n",
-    "http://104.198.216.197/post?key=8e64c48b-8920-4b56-9477-1ddb96ced8db\n",
-    "\n",
-    "Without API key\n",
-    "\n",
-    "http://104.198.216.197/post\n",
-    "\n"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": []
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python 2",
-   "language": "python",
-   "name": "python2"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 2
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython2",
-   "version": "2.7.16"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 2
-}
+## INFO8000 Assignment 3
+
+#### Files:
+
+* **test_app.py** : the main Flask application with all the paths
+
+* **dbsetup.py** : code used to create and populate the database 
+
+* **render.html** : html file used by the main application to render database results
+
+### URLs for the API
+
+* The server address is: http://104.198.216.197
+
+* **Main Link (/):**
+
+A GET link Where you can change the values of parameters in the url, gives out a json formated text. (Changeable parameters - name, city, state, institution, status)
+
+
+Examples:
+
+http://104.198.216.197/?name=Anord&city=Savannah 
+
+http://104.198.216.197/?name=Grace&city=Atlanta&state=Georgia&status=Instructor
+
+
+* **A GET link (/get) to get data from database**
+
+The data about owners and workers in the field is queried from the database and the output is the resulting json formatted text
+
+
+Examples:
+
+http://104.198.216.197/get
+
+
+
+
+* **A POST link (/datapost) where you can post to the database.**
+
+This is protected by the **API key = '8e64c48b-8920-4b56-9477-1ddb96ced8db'**. You can see a list the current cities in the database, and if you include your API key in your url you can add another cities in the database. 
+
+If submission is successfull you get a json result with status of your submission and all the cities in the database (including the one you submitted)
+
+Examples:
+
+With API key
+
+http://104.198.216.197/datapost?key=8e64c48b-8920-4b56-9477-1ddb96ced8db
+
+
+Without API key
+
+http://104.198.216.197/datapost
+
+**Note:** without the key you get a json with failure status when trying to post
+
+
+* **A POST link (/post) where you add new crops to the database**
+
+The POST process is also protected by the API key. This has an html rendering of the current crops in the database. You can add another crop and see the html result immediately
+
+Without the API key you can only view, not post.
+
+Examples:
+
+With API key
+
+http://104.198.216.197/post?key=8e64c48b-8920-4b56-9477-1ddb96ced8db
+
+Without API key
+
+http://104.198.216.197/post
