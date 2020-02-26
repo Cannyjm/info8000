@@ -1,7 +1,9 @@
+
 ## INFO8000 Assignment 4
 
 #### Files:
 * **INFO8000_Assignment4.ipynb** : The notebook file for assignment 4
+
 
 
 ## INFO8000 Assignment 3
@@ -76,4 +78,8 @@ http://104.198.216.197/post?key=8e64c48b-8920-4b56-9477-1ddb96ced8db
 
 Without API key
 
+<<<<<<< HEAD
 http://104.198.216.197/post
+=======
+http://104.198.216.197/post
+>>>>>>> f92dd9e55193263a0904782747b5385c6b8fb7ea
