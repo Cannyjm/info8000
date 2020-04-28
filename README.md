@@ -1,3 +1,7 @@
+## INFO8000_Assignment 5
+
+#### File:
+* **Assignment5_INFO8000.ipynb** : The notebook for assignment 5
 
 ## INFO8000 Assignment 4
 
@@ -12,7 +16,7 @@
 
 * **test_app.py** : the main Flask application with all the paths
 
-* **dbsetup.py** : code used to create and populate the database 
+* **dbsetup.py** : code used to create and populate the database
 
 * **render.html** : html file used by the main application to render database results
 
@@ -27,7 +31,7 @@ A GET link Where you can change the values of parameters in the url, gives out a
 
 Examples:
 
-http://104.198.216.197/?name=Anord&city=Savannah 
+http://104.198.216.197/?name=Anord&city=Savannah
 
 http://104.198.216.197/?name=Grace&city=Atlanta&state=Georgia&status=Instructor
 
@@ -46,7 +50,7 @@ http://104.198.216.197/get
 
 * **A POST link (/datapost) where you can post to the database.**
 
-This is protected by the **API key = '8e64c48b-8920-4b56-9477-1ddb96ced8db'**. You can see a list the current cities in the database, and if you include your API key in your url you can add another cities in the database. 
+This is protected by the **API key = '8e64c48b-8920-4b56-9477-1ddb96ced8db'**. You can see a list the current cities in the database, and if you include your API key in your url you can add another cities in the database.
 
 If submission is successfull you get a json result with status of your submission and all the cities in the database (including the one you submitted)
 
