@@ -1,3 +1,19 @@
+### SEMESTER PROJECT
+#### Weed detection
+The project deals with detecting 5 types of weed (pig weed, texas panicum, sicklepod, florida pusley, and pitted morningglory) in images. It uses API for acquiring and store new images (uploading), and detection of weeds.
+The detection model used was YOLOv3.
+
+* **Data Acquisition and storage**
+Weed images are collected and saved in the the server using the API.
+### URLs for the API
+* The server address is: http://104.198.216.197/upload
+
+* **Weed detection**
+You can upload an image with weeds inside, and the model will indicate the types of weeds from the weed classes above by drawing a bounding box around the weed.
+### URLs for the API
+* The server address is: http://104.198.216.197/detect
+
+
 ## INFO8000_Assignment 5
 
 #### File:
