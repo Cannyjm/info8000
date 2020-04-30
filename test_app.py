@@ -1,4 +1,4 @@
-from flask import Flask, flash,escape,request,jsonify,redirect,render_template,url_for,abort, make_response,session
+from flask import Flask, flash,escape,request,jsonify,redirect,render_template,url_for,abort, make_response,session,send_from_directory
 import sqlite3 as sql
 from werkzeug.utils import secure_filename
 import argparse
@@ -26,7 +26,7 @@ app.secret_key = '8e64c48b-8920-4b56-9477-1ddb96ced8db'
 ## -- Weed Detection method (read the model and draw bounding boxes on weeds in image)
 def detect(img_received):
     config='obj.cfg' #configuration file
-    weights='obj_73000.weights' #The model
+    weights='obj_90000.weights' #The model
     names='obj.names' #Weed names
 
     CONF_THRESH, NMS_THRESH = 0.5, 0.5
@@ -192,14 +192,16 @@ def uploadImg():
         flash('File(s) successfully uploaded')
         return redirect('/upload')
 
+###--- Downloading the model
+
+@app.route("/downloads",methods=['GET'])
+def get_file():
+    return send_from_directory(UPLOAD_FOLDER, 'obj_90000.weights', as_attachment=True) 
+
     
     
     
-    
-    
-    
-    
-    
+     
     
     
  #######--- Rest of info8000 assignments -- ##

@@ -3,6 +3,19 @@
 The project deals with detecting 13 types of weed (purple_nutsage, yellow_nutsage, pig_weed, goosegrass, crowfoot grass, crabgrass, texaspanicum, florida_beggaweed, florida_pusley, ivyleaf_moningglory, pitted_morningglory, sicklepod, smallflower_morningglory) in images. It uses API for acquiring and store new images (uploading), and detection of weeds.
 The detection model used was YOLOv3. The training was done under darknet YOLO framework
 
+#### File:
+* **test_app.py** : Script for the PROJECT
+* **Model file** : Since its size is bigger than github upload limit, it can be downloaded at http://104.198.216.197/downloads
+
+* **predict.html** : HTML rendering of prediction page
+* **upload.html** : HTML rendering of upload page
+* **obj.names** : Contain names of weeds (used as a reference to name weeds on bounding boxes)
+* **obj.cfg** : Configuration file for training, testing, and detection
+* **tempdb.db** : Sqlite3 database
+* **Sample weed images** : Folder containing sample images that can be used to test the model
+
+
+
 * **Data Acquisition and storage**
 Weed images are collected and saved in the the server using the API.
 ### URLs for the API
@@ -12,6 +25,7 @@ Weed images are collected and saved in the the server using the API.
 You can upload an image with weeds inside, and the model will indicate the types of weeds from the weed classes above by drawing a bounding box around the weed.
 ### URLs for the API
 * The server address is: http://104.198.216.197/detect
+
 
 
 ## INFO8000_Assignment 5
