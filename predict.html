@@ -1,0 +1,72 @@
+<html>
+    <header>
+        <title>Detecting Weeds In Images</title>
+        <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript" ></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" ></script>	
+        <style>
+      table, th, td {
+      padding: 10px;
+      border: 1px solid black; 
+      border-collapse: collapse;
+      }
+            #submit{border: 2px solid black;
+            }
+            body{padding-left: 30px}
+            .container{width: 400px; height: 400px}
+            .profile_pic{min-width: 200px; min-height: 200px;}
+            #pic{height: 100%; width: 100%;}
+            #pics{width: 300px; height: 300px}
+            #submit{width:150px; height:30px; color: red; background-color: #F4F6F6; border: 1px solid #A9ACAC; font-weight: bold; font-size: 13pt;}
+            .buttons{padding-top: 10px;}
+            
+    </style>
+        <script type='text/javascript'>
+            function readURL(input) {
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#pic').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+                $('.flashes').hide()
+            }
+        $(document).ready(function ()
+    {           
+        $('.NO-CACHE').attr('src',function () { return $(this).attr('src') + "?a=" + Math.random() });
+    });
+        </script>
+    </header>
+    <body>
+        <h2>Weed Detection</h2>
+
+        <div class='add'>
+            <h3>Select image to detect weeds</h3>
+            <div class='container'>
+            <div class="profile_pic"><img id="pic" class="NO-CACHE" src="{{url_for('static',filename=image)}}" alt="" /></div>
+            </div>
+            <div class='buttons'>
+                <p>
+                    {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                        <ul class=flashes>
+                        {% for message in messages %}
+                          <li>{{ message }}</li>
+                        {% endfor %}
+                        </ul>
+                      {% endif %}
+                    {% endwith %}
+                </p>
+            <form method="POST" enctype="multipart/form-data" >
+                <input type="file" name="image" id="fileToUpload_2" onChange="readURL(this)" accept="image/*" />
+                <input type='submit' value='Detect Weed' name='submit' id='submit' onClick="return empty()" />
+                
+            </form>
+            </div>
+        </div>    
+    </body>
+</html>

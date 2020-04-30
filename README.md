@@ -1,7 +1,7 @@
 ### SEMESTER PROJECT
 #### Weed detection
-The project deals with detecting 5 types of weed (pig weed, texas panicum, sicklepod, florida pusley, and pitted morningglory) in images. It uses API for acquiring and store new images (uploading), and detection of weeds.
-The detection model used was YOLOv3.
+The project deals with detecting 13 types of weed (purple_nutsage, yellow_nutsage, pig_weed, goosegrass, crowfoot grass, crabgrass, texaspanicum, florida_beggaweed, florida_pusley, ivyleaf_moningglory, pitted_morningglory, sicklepod, smallflower_morningglory) in images. It uses API for acquiring and store new images (uploading), and detection of weeds.
+The detection model used was YOLOv3. The training was done under darknet YOLO framework
 
 * **Data Acquisition and storage**
 Weed images are collected and saved in the the server using the API.

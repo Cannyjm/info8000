@@ -58,6 +58,18 @@ try:
     conn.execute("""
     CREATE TABLE if not exists spray (id INTEGER PRIMARY KEY AUTOINCREMENT, herbId INT, fieldId INT, personId INT, sprayDate TEXT)
     """)
+    conn.execute("""
+    DROP TABLE IF EXISTS image_uploads
+    """)
+    conn.execute("""
+    create table if not exists image_uploads (id INTEGER PRIMARY KEY AUTOINCREMENT,filename TEXT, weed_type TEXT, upload_date timestamp )
+    """) 
+    conn.execute("""
+    DROP TABLE IF EXISTS status_img
+    """)
+    conn.execute("""
+    create table if not exists status_img (id INTEGER PRIMARY KEY)
+    """) 
     
     conn.commit()
 except sql.Error as e:
@@ -104,6 +116,8 @@ try:
     conn.executemany("""
     insert into spray values(?,?,?,?,?)
     """,[(1,1,2,2,'01-03-2020'),(2,1,3,2,'01-04-2020'),(3,1,4,2,'01-03-2020'),(4,1,6,2,'01-07-2020'),(5,2,13,4,'01-07-2020'),(6,3,11,9,'01-09-2020')])
+    f=0
+    conn.execute('insert into status_img values (?)',[(f)])
 
     conn.commit()
 except sql.Error as e:
