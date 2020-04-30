@@ -8,12 +8,13 @@ import os
 import datetime
 
 UPLOAD_FOLDER = 'upload'
-ALLOWED_EXTENSIONS = set(['txt', 'png', 'jpg', 'jpeg'])
 
+##-- Allowed files to upload
+ALLOWED_EXTENSIONS = set(['txt', 'png', 'jpg', 'jpeg'])
+## --Checking if file is in allowed list
 def allowed_file(filename):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 	
-
 app = Flask(__name__,template_folder='./')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
@@ -21,10 +22,12 @@ app.config['SESSION_TYPE'] = 'memcached'
 #app.config['SECRET_KEY'] = '8e64c48b-8920-4b56-9477-1ddb96ced8db'
 app.secret_key = '8e64c48b-8920-4b56-9477-1ddb96ced8db'
 
+
+## -- Weed Detection method (read the model and draw bounding boxes on weeds in image)
 def detect(img_received):
-    config='obj.cfg'
-    weights='obj_73000.weights'
-    names='obj.names'
+    config='obj.cfg' #configuration file
+    weights='obj_73000.weights' #The model
+    names='obj.names' #Weed names
 
     CONF_THRESH, NMS_THRESH = 0.5, 0.5
 
@@ -68,7 +71,7 @@ def detect(img_received):
     # Draw the filtered bounding boxes with their class to the image
     with open(names, "r") as f:
         classes = [line.strip() for line in f.readlines()]
-    colors = np.random.uniform(0, 255, size=(len(classes), 3))
+    #colors = np.random.uniform(0, 255, size=(len(classes), 3))
 
     for index in indices:
         x, y, w, h = b_boxes[index]
@@ -78,6 +81,128 @@ def detect(img_received):
         cv2.putText(img, classes[class_ids[index]], (x + 5, y + 20), cv2.FONT_HERSHEY_TRIPLEX, 1, (0,0,0), 2)
     return(img)
               
+
+####-- WEED DETECTION ---###########################
+        
+@app.route("/detect",methods=['GET','POST'])
+def detectView():
+    if request.method=='GET':
+        #Checking if weed detection was requested, so as to display the detected image
+        conn=sql.connect("tempdb.db")
+        try:
+            curr=conn.execute("""
+            SELECT id FROM status_img
+            """)
+            rw=curr.fetchall()
+            conn.commit()
+        except sql.Error as e:
+            print ("Database error: " + str(e))
+
+        finally:
+            conn.close()
+        if(rw[0][0]==1): #if the system detects weed
+            conn=sql.connect("tempdb.db")
+            try:
+                curr=conn.execute("""
+                UPDATE status_img set id=0
+                """)
+                conn.commit()
+            except sql.Error as e:
+                print ("Database error: " + str(e))
+
+            finally:
+                conn.close()
+            #Display the detected image (every detected image is saved as detected.jpg, see below)
+            response='detected.jpg'
+            return render_template('predict.html',image=response)
+        else:
+            #if not requested, don't display anything
+            response='default.png'
+            return render_template('predict.html',image=response)
+    else:
+        #Post image to detect
+        if 'image' not in request.files:
+            flash('no image selected')
+            return redirect('/detect')
+        f = request.files['image']
+        if f.filename == '':
+            flash('no image selected')
+            return redirect('/detect')
+        if f and allowed_file(f.filename):
+            f.filename='new_img.jpg'
+            f.save('static/'+f.filename)
+            filename='static/new_img.jpg'
+            feedback=detect(filename) #Detect weeds in image
+            #Save the detected image as detected.jpg
+            res='static/detected.jpg' 
+            cv2.imwrite(res,feedback)
+            #set status of request to imply weed was detected
+            conn=sql.connect("tempdb.db")
+            try:
+                curr=conn.execute("""
+                UPDATE status_img set id=1
+                """)
+                conn.commit()
+            except sql.Error as e:
+                print ("Database error: " + str(e))
+
+            finally:
+                conn.close()
+            return redirect('/detect')
+        else:
+            flash('File format not allowed')
+            return redirect('/detect')
+        
+###--- UPLOADING IMAGES AND LABELS ----##
+        
+@app.route("/upload",methods=['GET','POST'])
+def uploadImg():
+    if request.method=='GET':
+        #Get the web interface to upload files
+        return render_template('upload.html')
+    else:
+        #If files are uploaded
+        if 'files[]' not in request.files:
+            flash('No file selected')
+            return redirect('/upload')
+        files = request.files.getlist('files[]')
+        weed_type=escape(request.form['weed_type'])
+        for file in files:
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                if filename.rsplit('.', 1)[1].lower() != 'txt':
+                    uploadDate=datetime.datetime.now()
+                    #Updating the database with the new images uploaded
+                    conn=sql.connect("tempdb.db")
+                    try:
+                        conn.execute("""
+                        insert into image_uploads values(null,?,?,?)
+                        """,(filename,weed_type,uploadDate))
+                        conn.commit()
+                    except sql.Error as e:
+                        return ("Database error: " + str(e))
+
+                    finally:
+                        conn.close()
+            else:
+                flash('File type not allowed')
+                return redirect('/upload')   
+        
+        flash('File(s) successfully uploaded')
+        return redirect('/upload')
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+ #######--- Rest of info8000 assignments -- ##
 #Example of an API key
 appkey="8e64c48b-8920-4b56-9477-1ddb96ced8db"
 key_presence='n'
@@ -222,105 +347,3 @@ def postView():
         else:
             resp2={"status":"Submission Failure API Key required"}
             return jsonify(resp2)
-
-
-        ###################
-        
-@app.route("/detect",methods=['GET','POST'])
-def detectView():
-    if request.method=='GET':
-        conn=sql.connect("tempdb.db")
-        try:
-            curr=conn.execute("""
-            SELECT id FROM status_img
-            """)
-            rw=curr.fetchall()
-            conn.commit()
-        except sql.Error as e:
-            print ("Database error: " + str(e))
-
-        finally:
-            conn.close()
-        if(rw[0][0]==1):
-            conn=sql.connect("tempdb.db")
-            try:
-                curr=conn.execute("""
-                UPDATE status_img set id=0
-                """)
-                conn.commit()
-            except sql.Error as e:
-                print ("Database error: " + str(e))
-
-            finally:
-                conn.close()
-            response='detected.jpg'
-            return render_template('predict.html',image=response)
-        else:
-            response='default.png'
-            return render_template('predict.html',image=response)
-    else:
-        if 'image' not in request.files:
-            flash('no image selected')
-            return redirect('/detect')
-        f = request.files['image']
-        if f.filename == '':
-            flash('no image selected')
-            return redirect('/detect')
-        if f and allowed_file(f.filename):
-            f.filename='new_img.jpg'
-            f.save('static/'+f.filename)
-            filename='static/new_img.jpg'
-            feedback=detect(filename)
-            res='static/detected.jpg'
-            cv2.imwrite(res,feedback)
-            conn=sql.connect("tempdb.db")
-            try:
-                curr=conn.execute("""
-                UPDATE status_img set id=1
-                """)
-                conn.commit()
-            except sql.Error as e:
-                print ("Database error: " + str(e))
-
-            finally:
-                conn.close()
-            return redirect('/detect')
-        else:
-            flash('File format not allowed')
-            return redirect('/detect')
-        
-###--- UPLOADING IMAGES AND LABELS ----##
-        
-@app.route("/upload",methods=['GET','POST'])
-def uploadImg():
-    if request.method=='GET':
-        return render_template('upload.html')
-    else:
-        if 'files[]' not in request.files:
-			flash('No file selected')
-			return redirect('/upload')
-        files = request.files.getlist('files[]')
-        weed_type=escape(request.form['weed_type'])
-        for file in files:
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                if filename.rsplit('.', 1)[1].lower() != 'txt':
-                    uploadDate=datetime.datetime.now()
-                    conn=sql.connect("tempdb.db")
-                    try:
-                        conn.execute("""
-                        insert into image_uploads values(null,?,?,?)
-                        """,(filename,weed_type,uploadDate))
-                        conn.commit()
-                    except sql.Error as e:
-                        return ("Database error: " + str(e))
-
-                    finally:
-                        conn.close()
-            else:
-                flash('File type not allowed')
-                return redirect('/upload')   
-        
-        flash('File(s) successfully uploaded')
-        return redirect('/upload')
