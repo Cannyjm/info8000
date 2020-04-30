@@ -21,14 +21,17 @@ Weed images are collected and saved in the the server using the API.
 #### URLs for the API
 * The server address is: http://104.198.216.197/upload
 
+### Training process
+I had about 1600 labelled images for the 13 classes of weeds, Using CLoDSA augmentation library I was able to increase the labelled images to 47,7760.
+This dataset was divided into training(80%) and testing(20%). Training was done using YOLOv3 darknet environment on the training dataset while validating with the testing dataset.
+
+
 ### Weed detection
 You can upload an image with weeds inside, and the model will indicate the types of weeds from the weed classes above by drawing a bounding box around the weed.
 #### URLs for the API
 * The server address is: http://104.198.216.197/detect
 
-### Training process
-I had about 1600 labelled images for the 13 classes of weeds, Using CLoDSA augmentation library I was able to increase the labelled images to 47,7760.
-This dataset was divided into training(80%) and testing(20%). Training was done using YOLOv3 darknet environment on the training dataset while validating with the testing dataset.
+
 
 ### Model Evaluation
 Running the model against the testing dataset (about 10,000 images), at a 0.5 detecting threshold, using NVDIA GTX 2080 gpu:
