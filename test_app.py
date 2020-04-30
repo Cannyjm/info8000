@@ -64,21 +64,21 @@ def detect(img_received):
                 b_boxes.append([x, y, int(w), int(h)])
                 confidences.append(float(confidence))
                 class_ids.append(int(class_id))
+    if(b_boxes !=[]): #if there is weed detection
+        # Perform non maximum suppression for the bounding boxes to filter overlapping and low confident bounding boxes
+        indices = cv2.dnn.NMSBoxes(b_boxes, confidences, CONF_THRESH, NMS_THRESH).flatten().tolist()
 
-    # Perform non maximum suppression for the bounding boxes to filter overlapping and low confident bounding boxes
-    indices = cv2.dnn.NMSBoxes(b_boxes, confidences, CONF_THRESH, NMS_THRESH).flatten().tolist()
+        # Draw the filtered bounding boxes with their class to the image
+        with open(names, "r") as f:
+            classes = [line.strip() for line in f.readlines()]
+        #colors = np.random.uniform(0, 255, size=(len(classes), 3))
 
-    # Draw the filtered bounding boxes with their class to the image
-    with open(names, "r") as f:
-        classes = [line.strip() for line in f.readlines()]
-    #colors = np.random.uniform(0, 255, size=(len(classes), 3))
-
-    for index in indices:
-        x, y, w, h = b_boxes[index]
-        box_coords = ((x+5, y), (x-5 + w, y+20))
-        cv2.rectangle(img, (x, y), (x + w, y + h), (0,0,0), 2)
-        cv2.rectangle(img, box_coords[0], box_coords[1], (255,255,255), cv2.FILLED)
-        cv2.putText(img, classes[class_ids[index]], (x + 5, y + 20), cv2.FONT_HERSHEY_TRIPLEX, 1, (0,0,0), 2)
+        for index in indices:
+            x, y, w, h = b_boxes[index]
+            box_coords = ((x+5, y), (x-5 + w, y+20))
+            cv2.rectangle(img, (x, y), (x + w, y + h), (0,0,0), 2)
+            cv2.rectangle(img, box_coords[0], box_coords[1], (255,255,255), cv2.FILLED)
+            cv2.putText(img, classes[class_ids[index]], (x + 5, y + 20), cv2.FONT_HERSHEY_TRIPLEX, 1, (0,0,0), 2)
     return(img)
               
 

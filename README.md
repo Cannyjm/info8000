@@ -26,6 +26,37 @@ You can upload an image with weeds inside, and the model will indicate the types
 ### URLs for the API
 * The server address is: http://104.198.216.197/detect
 
+* **Training process**
+I had about 1600 labelled images for the 13 classes of weeds, Using CLoDSA augmentation library I was able to increase the labelled images to 47,7760.
+This dataset was divided into training(80%) and testing(20%). Training was done using YOLOv3 darknet environment on the training dataset while validating with the testing dataset.
+
+* **Model Evaluation**
+Running the model against the testing dataset (about 10,000 images), at a 0.5 detecting threshold, using NVDIA GTX 2080 gpu:
+
+calculation mAP (mean average precision)...
+Number of images = 9552
+detections_count = 11916, unique_truth_count = 10346  
+class_id = 0, name = purple_nutsage, ap = 90.42%   	 (TP = 373, FP = 6)
+class_id = 1, name = yellow_nutsage, ap = 93.32%   	 (TP = 331, FP = 10)
+class_id = 2, name = pig_weed, ap = 93.31%   	 (TP = 1153, FP = 52)
+class_id = 3, name = goosegrass, ap = 93.73%   	 (TP = 631, FP = 1)
+class_id = 4, name = crowfootgrass, ap = 95.75%   	 (TP = 533, FP = 2)
+class_id = 5, name = crabgrass, ap = 94.23%   	 (TP = 1010, FP = 5)
+class_id = 6, name = texaspanicum, ap = 93.45%   	 (TP = 876, FP = 18)
+class_id = 7, name = florida_beggaweed, ap = 94.56%   	 (TP = 869, FP = 10)
+class_id = 8, name = florida_pusley, ap = 93.07%   	 (TP = 648, FP = 6)
+class_id = 9, name = ivyleaf_morningglory, ap = 93.43%   	 (TP = 980, FP = 21)
+class_id = 10, name = pitted_morningglory, ap = 94.98%   	 (TP = 653, FP = 18)
+class_id = 11, name = sicklepod, ap = 94.88%   	 (TP = 581, FP = 11)
+class_id = 12, name = smallflower_morningglory, ap = 94.43%   	 (TP = 864, FP = 27)
+
+for conf_thresh = 0.50, precision = 0.98, recall = 0.92, F1-score = 0.95
+for conf_thresh = 0.50, TP = 9502, FP = 187, FN = 844, average IoU = 83.26 %
+
+IoU threshold = 50 %, used Area-Under-Curve for each unique Recall
+mean average precision (mAP@0.50) = 0.938125, or 93.81 %
+Total Detection Time: 128.000000 Seconds
+
 
 
 ## INFO8000_Assignment 5
